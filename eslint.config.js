@@ -92,6 +92,12 @@ export default tseslint.config(
     rules: { 'no-restricted-syntax': 'off' },
   },
 
+  // Editor/agent hook scripts are plain Node ES modules.
+  {
+    files: ['.claude/hooks/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node } },
+  },
+
   // Plain JS (config/tooling) — no type-aware linting.
   {
     files: ['**/*.{js,cjs,mjs}'],

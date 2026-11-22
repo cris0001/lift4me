@@ -168,8 +168,9 @@ coverage/
 playwright-report/
 test-results/
 
-# Claude Code local files (do not commit session context)
-.claude/
+# Claude Code: shared project config (.claude/settings.json, .claude/hooks/,
+# .claude/agents/) is committed; personal permissions and overrides stay local.
+.claude/settings.local.json
 
 # Design handoff — local reference only, never commit
 apps/web/design/
