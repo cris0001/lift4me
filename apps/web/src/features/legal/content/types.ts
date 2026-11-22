@@ -16,7 +16,7 @@ export interface LegalDoc {
 export const ADMIN = { pl: 'Krystian Gaik', en: 'Krystian Gaik' };
 export const EMAIL = 'lift4mee@gmail.com';
 export const HOSTING = {
-  pl: 'Fly.io, Inc. (serwery w Amsterdamie, Holandia)',
-  en: 'Fly.io, Inc. (servers in Amsterdam, the Netherlands)',
+  pl: 'Amazon Web Services EMEA SARL (serwery we Frankfurcie, Niemcy)',
+  en: 'Amazon Web Services EMEA SARL (servers in Frankfurt, Germany)',
 };
-export const UPDATED = '2026-11-14';
+export const UPDATED = '2026-11-22';
