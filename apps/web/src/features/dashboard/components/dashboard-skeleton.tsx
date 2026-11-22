@@ -30,55 +30,58 @@ export function DashboardSkeleton() {
     <div className="lg:col-start-2 flex w-full max-w-6xl flex-col gap-5 p-3 md:p-4 xl:max-w-7xl xl:gap-7 xl:p-6">
       <header className="flex items-center justify-between gap-3">
         <div className="flex flex-col">
-          {/* Date: text-sm (20px line); greeting: 28/34px at leading-tight. */}
-          <Line height="h-5" className="h-3.5 w-32" />
-          <Line height="h-[35px] lg:h-[42.5px]" className="h-7 w-52 lg:h-8" />
+          {/* Date: text-sm/xl:text-base; greeting: 28/34/42px at leading-tight. */}
+          <Line height="h-5 xl:h-6" className="h-3.5 w-32 xl:h-4 xl:w-40" />
+          <Line
+            height="h-[35px] lg:h-[42.5px] xl:h-[52.5px]"
+            className="h-7 w-52 lg:h-8 xl:h-10 xl:w-64"
+          />
         </div>
-        <Skeleton className="hidden h-9.5 w-40 rounded-full lg:block" />
+        <Skeleton className="hidden h-9.5 w-40 rounded-full lg:block xl:h-11 xl:w-48" />
       </header>
 
       <Skeleton className="h-9.5 w-full rounded-full lg:hidden" />
 
       <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr] xl:gap-6">
-        <div className={cn(card, 'gap-4')}>
+        <div className={cn(card, 'gap-4 xl:gap-5')}>
           <p className={microLabel}>{t.skeleton.plate}</p>
-          <div className="flex items-center gap-5">
-            <Skeleton className="size-28 shrink-0 rounded-full lg:size-32" />
-            <div className="flex min-w-0 flex-1 flex-col gap-3">
-              {/* Each macro: a text-xs label row over a 6px bar. */}
+          <div className="flex items-center gap-5 xl:gap-8">
+            <Skeleton className="size-28 shrink-0 rounded-full lg:size-32 xl:size-44" />
+            <div className="flex min-w-0 flex-1 flex-col gap-3 xl:gap-4">
+              {/* Each macro: a text-xs (xl: text-sm) label row over a 6px (xl: 8px) bar. */}
               {['w-16', 'w-14', 'w-10'].map((width) => (
                 <div key={width} className="flex flex-col gap-1">
-                  <div className="flex h-4 items-center justify-between">
+                  <div className="flex h-4 items-center justify-between xl:h-5">
                     <Skeleton className={cn('h-3', width)} />
                     <Skeleton className="h-3 w-14" />
                   </div>
-                  <Skeleton className="h-1.5 w-full rounded-full" />
+                  <Skeleton className="h-1.5 w-full rounded-full xl:h-2" />
                 </div>
               ))}
-              <Skeleton className="h-6 w-24 rounded-full" />
+              <Skeleton className="h-6 w-24 rounded-full xl:h-7 xl:w-28" />
             </div>
           </div>
         </div>
-        <div className={cn(card, 'gap-1.5')}>
+        <div className={cn(card, 'gap-1.5 xl:gap-2.5')}>
           <p className={microLabel}>{t.skeleton.nextSession}</p>
           <div className="flex flex-col gap-0.5">
-            <Line height="h-[27.5px]" className="h-5 w-3/5" />
-            <Line height="h-5" className="h-3.5 w-2/5" />
+            <Line height="h-[27.5px] xl:h-[35px]" className="h-5 w-3/5 xl:h-6" />
+            <Line height="h-5 xl:h-6" className="h-3.5 w-2/5 xl:h-4" />
           </div>
           <div className="mt-auto flex gap-2 pt-2">
-            <Skeleton className="h-10 w-24 rounded-full" />
-            <Skeleton className="h-10 w-28 rounded-full" />
+            <Skeleton className="h-10 w-24 rounded-full xl:h-11 xl:w-28" />
+            <Skeleton className="h-10 w-28 rounded-full xl:h-11 xl:w-32" />
           </div>
         </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2 xl:gap-6">
-        {/* Weight: value, the two deltas, then the 80px sparkline + its date row. */}
-        <div className={cn(card, 'gap-1')}>
+        {/* Weight: value, the two deltas, then the 80px (xl: 112px) sparkline + its date row. */}
+        <div className={cn(card, 'gap-1 xl:gap-2')}>
           <p className={microLabel}>{t.skeleton.weight}</p>
-          <Line height="h-[32.5px]" className="h-6 w-24" />
-          <Line height="h-4" className="h-3 w-48" />
-          <Skeleton className="mt-2 h-20 w-full rounded-lg" />
+          <Line height="h-[32.5px] xl:h-[42.5px]" className="h-6 w-24 xl:h-8 xl:w-32" />
+          <Line height="h-4 xl:h-5" className="h-3 w-48 xl:h-3.5 xl:w-56" />
+          <Skeleton className="mt-2 h-20 w-full rounded-lg xl:h-28" />
           <div className="flex h-4 items-center justify-between">
             <Skeleton className="h-2.5 w-10" />
             <Skeleton className="h-2.5 w-10" />
@@ -89,13 +92,13 @@ export function DashboardSkeleton() {
           <div className="flex h-5 items-center">
             <p className={microLabel}>{t.skeleton.lastWorkout}</p>
           </div>
-          <Line height="h-[27.5px]" className="h-5 w-1/2" />
-          <Line height="h-4" className="h-3 w-3/4" />
+          <Line height="h-[27.5px] xl:h-[35px]" className="h-5 w-1/2 xl:h-6" />
+          <Line height="h-4 xl:h-5" className="h-3 w-3/4 xl:h-3.5" />
         </div>
       </div>
 
       {/* Strava: a rule above, then the last activity beside the weekly-volume card. */}
-      <div className="grid gap-4 border-t pt-5 lg:grid-cols-2">
+      <div className="grid gap-4 border-t pt-5 lg:grid-cols-2 xl:gap-6 xl:pt-7">
         <div className={cn(card, 'gap-1')}>
           <p className={microLabel}>{t.skeleton.lastActivity}</p>
           <div className="flex items-center gap-3">
@@ -119,7 +122,7 @@ export function DashboardSkeleton() {
             <p className={microLabel}>{t.skeleton.lastWeeks}</p>
           </div>
           <Line height="h-[23px]" className="h-5 w-28" />
-          <div className="grid h-24 grid-cols-8 items-end gap-2">
+          <div className="grid h-24 grid-cols-8 items-end gap-2 xl:h-32">
             {['h-1/2', 'h-3/4', 'h-2/5', 'h-full', 'h-3/5', 'h-4/5', 'h-2/3', 'h-1/2'].map(
               (height, i) => (
                 <Skeleton key={i} className={cn('rounded-sm', height)} />

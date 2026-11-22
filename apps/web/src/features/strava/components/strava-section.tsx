@@ -20,12 +20,12 @@ export function StravaSection() {
 
   if (!connected) {
     return (
-      <div className="bg-card flex flex-col gap-2 rounded-xl border p-5">
-        <p className="text-muted-foreground flex items-center gap-1.5 text-[11px] font-medium tracking-[0.08em] uppercase">
+      <div className="bg-card flex flex-col gap-2 rounded-xl border p-5 xl:p-7">
+        <p className="text-muted-foreground flex items-center gap-1.5 text-[11px] font-medium tracking-[0.08em] uppercase xl:text-[13px]">
           <StravaLogo className="size-3.5 text-[#fc4c02]" />
           Strava
         </p>
-        <span className="text-muted-foreground text-sm">{t.connect.sectionHint}</span>
+        <span className="text-muted-foreground text-sm xl:text-base">{t.connect.sectionHint}</span>
         <a
           href={STRAVA_CONNECT_URL}
           className="bg-primary text-primary-foreground mt-1 inline-flex h-9 w-fit items-center rounded-full px-4 text-sm font-semibold"
@@ -39,7 +39,7 @@ export function StravaSection() {
   return (
     // A rule above sets Strava apart from the app's own cards; below it the last
     // activity and its sport's weekly volume share a row, like Weight / Last workout.
-    <div className="grid gap-4 border-t pt-5 lg:grid-cols-2">
+    <div className="grid gap-4 border-t pt-5 lg:grid-cols-2 xl:gap-6 xl:pt-7">
       <StravaLastActivityCard session={sessions[0] ?? null} />
       <StravaWeeklyCard sessions={sessions} />
     </div>

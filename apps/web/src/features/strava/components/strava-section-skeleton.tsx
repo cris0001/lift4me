@@ -7,8 +7,8 @@ const BAR_HEIGHTS = [35, 60, 45, 80, 30, 70, 55, 90];
 // weekly bars), so a linked account never flashes the "Connect Strava" card.
 export function StravaSectionSkeleton() {
   return (
-    <div aria-hidden className="grid gap-4 border-t pt-5 lg:grid-cols-2">
-      <div className="bg-card flex flex-col gap-3 rounded-xl border p-5">
+    <div aria-hidden className="grid gap-4 border-t pt-5 lg:grid-cols-2 xl:gap-6 xl:pt-7">
+      <div className="bg-card flex flex-col gap-3 rounded-xl border p-5 xl:p-7">
         <Skeleton className="h-3 w-24" />
         <div className="flex items-center gap-3">
           <Skeleton className="size-10 shrink-0 rounded-lg" />
@@ -26,10 +26,10 @@ export function StravaSectionSkeleton() {
           ))}
         </div>
       </div>
-      <div className="bg-card flex flex-col gap-3 rounded-xl border p-5">
+      <div className="bg-card flex flex-col gap-3 rounded-xl border p-5 xl:p-7">
         <Skeleton className="h-3 w-28" />
         <Skeleton className="h-6 w-24" />
-        <div className="mt-auto grid h-24 grid-cols-8 items-end gap-2">
+        <div className="mt-auto grid h-24 grid-cols-8 xl:h-32 items-end gap-2">
           {BAR_HEIGHTS.map((h, i) => (
             <Skeleton key={i} className="rounded-sm" style={{ height: `${h}%` }} />
           ))}
