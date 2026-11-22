@@ -7,7 +7,7 @@ import { env } from './lib/env';
 // Server bootstrap: the only place that binds a port. Importing `env` here
 // validates the environment before we start listening (fail fast on misconfig).
 
-// Single-app deploy (Fly): the same server also serves the built SPA. Static assets
+// Single-app deploy: in production the same server also serves the built SPA. Static assets
 // come from STATIC_DIR; anything else falls back to index.html for client-side
 // routing — except /api and /health, which stay API responses. The /api routes are
 // registered first (in app.ts), so real endpoints are matched before this fallback.

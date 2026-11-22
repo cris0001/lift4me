@@ -2,7 +2,7 @@
 
 # One image for the whole app: install the pnpm workspace, build the SPA, and run the
 # Hono API via tsx. The API also serves the built SPA (STATIC_DIR) on the same origin,
-# so this single Fly service covers both /api and the web app.
+# so this single image covers both /api and the web app.
 FROM node:22-slim
 
 # pnpm via Corepack (version pinned by the repo's package.json "packageManager").
@@ -16,7 +16,8 @@ RUN pnpm install --frozen-lockfile
 RUN pnpm --filter @gym-bro/web build
 
 # Runtime config. STATIC_DIR is absolute so SPA serving is independent of the CWD.
-# Fly injects the secrets (DATABASE_URL, JWT_SECRET, CORS_ORIGIN, STRAVA_*) at runtime.
+# Secrets (DATABASE_URL, JWT_SECRET, CORS_ORIGIN, STRAVA_*, …) are injected at runtime
+# from SSM Parameter Store by deploy/deploy.sh (see docs/DEPLOYMENT.md).
 ENV NODE_ENV=production
 ENV PORT=8080
 ENV STATIC_DIR=/app/apps/web/dist
