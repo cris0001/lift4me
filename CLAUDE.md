@@ -1,14 +1,22 @@
-# Gym Bro — Project Context
+# Lift4Me — Project Context
 
 ## What this is
 
-Personal fitness tracker — a web app combining strength training,
-nutrition tracking (macros only), and body measurements in one tool.
-Built for daily personal use at the gym and tracking nutrition.
+Lift4Me (https://lift4.me) — a fitness tracker web app combining strength
+training, nutrition tracking (macros only), and body measurements in one tool.
+Built for daily use at the gym and for logging meals on the go.
 
-## Single-user app
+Workspace packages keep their original `@gym-bro/*` names (the project was
+renamed to Lift4Me later); renaming them is not worth the churn.
 
-Not multi-tenant SaaS. Designed for personal use + demo account.
+## Users and access
+
+Started as a single-user app (personal use + demo account). It now accepts
+open registration: every row is owned by a user and every query is scoped to
+the signed-in user. Access is gated by an optional licence expiry on the user
+(`users.license_expires_at`, NULL = unlimited); a lapsed licence confines the
+user to the dashboard paywall. Payments are not wired yet (Stripe checkout is a
+placeholder). Still not multi-tenant SaaS — no organisations, roles, or teams.
 
 ## Stack — committed decisions
 
@@ -42,9 +50,17 @@ Not multi-tenant SaaS. Designed for personal use + demo account.
 - Node.js 22 LTS
 - Drizzle ORM (NOT Prisma)
 - PostgreSQL via Neon (serverless, free tier)
-- Zod for request validation
+- Zod for request validation (including env validation at boot)
 - jose for JWT
-- bcrypt for passwords
+- bcryptjs for passwords (pure JS, no native build in the image)
+
+### Infrastructure
+
+- Docker image (API + built SPA, one origin) on AWS EC2 behind nginx and
+  Cloudflare
+- Terraform in `infra/`, GitHub Actions → ECR → SSM deploy with health-checked
+  rollback
+- Details: `docs/DEPLOYMENT.md`
 
 ### Shared (packages/shared)
 
@@ -368,10 +384,12 @@ meals on-the-go). Mobile is the PRIMARY target, desktop is secondary.
 - NO enterprise patterns (no DI containers, no decorators)
 - NO scope creep beyond current stage
 - NO seed data for normal users (empty app for them)
-- NO pre-defined exercises, foods, or workout tags
-- NO internationalization in MVP — UI is English-only
-- NO product images in MVP
-- NO OAuth in MVP — email/password with JWT only
+- NO pre-defined exercises or workout tags. Foods: a user's own food dictionary
+  starts empty; the shared product catalog (`global_products`, OpenFoodFacts /
+  barcode lookups) is opt-in — a catalog product is copied into the user's foods
+  only when they log it
+- NO OAuth for sign-in — email/password with JWT only. (Strava OAuth is a data
+  integration, not a login method.)
 - NO desktop-first design — always start from mobile
 - NO unilateral architectural decisions — ask user first
 - NO running migrations without explicit user confirmation
@@ -380,7 +398,9 @@ meals on-the-go). Mobile is the PRIMARY target, desktop is secondary.
 ## Language
 
 - ALL code, comments, commit messages: English
-- ALL UI labels: English
+- UI: English (source) + Polish. Copy lives in per-feature `i18n.ts` files and
+  `lib/i18n/messages.ts`; English is the source shape and every other locale
+  must match it. No new UI string without both languages.
 - User-generated content (exercise names, food names, recipe names,
   workout names, tag names, notes): user's choice, app is agnostic
 
@@ -551,106 +571,28 @@ Migrations can destroy data. Rules:
   warn explicitly and recommend backup first
 - Migrations are run by USER, not Claude. Claude only generates them.
 
-## Current stage
+## Project status
 
-Stage 11: unified dashboard (apps/web) — pull the three modules into one home
-screen: today's planned workout (if any), the day's calories vs the current
-target, latest weight + weekly trend, and the streak counter, fetched in parallel
-(useQueries) with per-section skeleton/empty states. No new tables or endpoints —
-it composes existing Stage 6/8/10 reads. (A basic dashboard with weekly streak +
-next session already shipped in Stage 6; Stage 11 expands it to all three modules.)
+The MVP (Stages 0–10) and most of the post-MVP plan are done. Architecture
+decisions live in `docs/DECISIONS.md`.
 
-(Stage 10 — body measurements — COMPLETE: a body_measurements table (weight +
-body_fat + optional biceps/chest/waist/hip/thigh, UNIQUE per date; migration 0006
-on Neon) and the body feature module end to end. The backend upsert MERGES on a
-same-day re-save — a number sets, an explicit null clears, an omitted field is
-left untouched — so the prominent quick-add weight form stays non-destructive; 10
-route tests (181 total). Web shipped in three slices (data layer + nav → quick-add
-form + list → charts): the quick-add/edit form (date defaults to today, weight +
-body fat shown, the five circumferences behind "Show more"), the history list with
-edit (reloads the form) + a Popover-confirmed delete, a trend chart (per-measure
-selector + 7-/30-day moving-average overlays, Recharts, code-split to the route +
-dark-mode themed), and a weight stats panel (latest / since-last / lowest /
-highest). Moving averages are a pure @gym-bro/shared util using a CALENDAR-day
-window (a 7-day average = mean of every point within the trailing 7 calendar days,
-honest under sparse logging), with 9 unit tests. The merge upsert relies on the
-shared schema marking measurement fields nullable+optional so null (clear) is
-distinct from omitted (leave). Body is in primary nav. Deferred: list
-pagination/virtualization (Stage 12), a date-range selector, and the
-nutrition-target-overlay bonus.)
+Shipped:
 
-(Stage 9 — nutrition UI — COMPLETE: the apps/web nutrition feature over the Stage 8
-endpoints, in four slices. Food dictionary (list + search + create/edit Sheet,
-soft-delete); recipes (list + full-page builder at /recipes/new and
-/recipes/$recipeId — per-ingredient food picker + live whole-recipe & per-serving
-macro preview); daily diary (/diary, today by default + day nav, add food-by-grams
-or recipe-by-servings via a sheet, remove entries, day summary with per-macro
-progress bars vs current target); targets (edit current + history). Macro math was
-lifted into @gym-bro/shared (scale/sum/divide/multiply, unit-tested there) so the
-builder's live preview and the backend snapshots share one source of truth. A
-shadcn Progress primitive was added. Nav: Diary in primary, Foods/Recipes/Targets
-under Library. Deferred: inline quantity-edit of a diary entry (delete + re-add
-covers it; PATCH endpoint exists). Post-Stage-9 enhancement (migration 0005): the
-diary is split into 5 Fitatu-style meals (breakfast / second_breakfast / lunch /
-snack / dinner) via a meal_type enum + food_log.meal, each meal section with its
-own add; and a recipe can be logged by grams OR servings via a food_log_unit enum
+- Auth (email/password, JWT in HttpOnly cookie) + optional onboarding
+- Training: exercises, plans, templates, calendar with drag-to-reschedule,
+  active workout session (auto-saved draft, swap, copy last set), history + edit,
+  tags, rating
+- Training stats: per-exercise progress, rating trend
+- Nutrition: food dictionary, recipes, daily diary split into meals,
+  historical targets, product catalog + barcode scanner, photo → macros
+  estimate (Gemini), food photos
+- Body measurements with moving-average trends
+- Unified dashboard (nutrition, next session, weight trend, last workout, Strava)
+- Strava integration (OAuth connect + activity import)
+- i18n (English + Polish), dark mode, colour palettes, landing page
+- Licence expiry + paywall (payments not wired yet)
+- Production on AWS (see `docs/DEPLOYMENT.md`); the old Fly.io deploy is being
+  retired
 
-- food_log.unit (grams snapshot = total ÷ total weight × grams). MEAL_TYPES +
-  FOOD_LOG_UNITS in @gym-bro/shared.
-
-Stage 8 — nutrition backend — COMPLETE: foods, recipes (+ recipe_ingredients),
-food_log, and historical nutrition_targets tables (migration 0004 on Neon); the
-nutrition feature module (repository/service/routes) + nutrition Zod schemas/types
-in @gym-bro/shared. Food & recipe dictionaries (soft-delete, case-insensitive
-unique names); recipe macros computed on read from ingredients (no cached columns)
-with a servings count; food_log snapshots macros at log time (food by grams,
-recipe by per-serving × servings) so editing/deleting a source never rewrites
-history, with day-totals + a linear quantity-rescale on edit; nutrition targets via
-a one-row-per-date upsert ("current" = most recent). Pure macro math in
-nutrition.utils (scale/sum/divide/multiply) with unit tests; 43 nutrition tests
-(177 total). Endpoint verbs: PUT full-replace for food/recipe edits, PATCH for
-food-log, PUT /nutrition-targets upsert, hard-delete for food-log.
-
-Stage 7 — training stats — COMPLETE: no new tables; reads Stage 6 workout/set
-data. Backend: three read-only /api/stats endpoints — logged-exercise picker,
-per-exercise progress (per-session MAX weight + SUM weight×reps, matched on
-actualExerciseId so swaps count, optional from/to window, nulls skipped so
-bodyweight drops out), and rating trend (all rated sessions) — in a new stats
-feature module (repository/service/routes), with statsRangeQuerySchema +
-StatExercise/ExerciseProgressPoint/RatingTrendPoint in @gym-bro/shared; 8 route
-tests (136 total). Frontend (apps/web): recharts added; a /stats page (primary
-nav) stacking a per-exercise progress chart (max-weight/volume metric toggle +
-searchable picker over logged exercises) and a pinned 1–5 rating-trend chart, both
-Recharts, themed via CSS vars for dark mode and code-split to the route.
-
-Stage 6 — calendar + workout sessions — COMPLETE: shipped end to end. Backend:
-planned_sessions, workout_sessions, exercise_performances, sets,
-workout_session_tags + users.active_plan_id (migration 0003 on Neon); active-plan,
-planned-session (calendar), and workout-session modules — atomic finish-workout
-transaction, manual-session calendar back-fill, full-graph edit (PUT /workout-
-sessions/:id), per-exercise history, date-range history, delete-reverts-planned,
-and a planned→workout deep-link; 128 route tests. Frontend (apps/web): calendar
-(month grid + desktop master-detail, Dumbbell/Activity icon markers, tag badges,
-dnd-kit drag-to-reschedule), the active-session view (persisted Zustand draft,
-collapsible cards, template exercises seeded on start, set logging with decimal
-weight, swap, copy-from-last-training, per-exercise notes, finish with rating/
-tags), start-from-template (searchable combobox + calendar), workout history
-(week navigation) + detail with full edit, ad-hoc activity logging, responsive
-sidebar/bottom navigation, and a dashboard (weekly streak + next session). Plus
-exercise category filter + name search.
-
-Stage 5 — training UI — complete: the apps/web training feature ships the full
-data layer + UI for exercises, tags, plans, templates, and the template-exercise
-builder — dnd-kit reorder with optimistic updates, all server state via TanStack
-Query and local UI state via Zustand; routes /exercises, /tags, and
-/plans → /plans/$planId → /templates/$templateId. Not yet linked from navigation
-(no bottom-nav chrome until a later stage). Stage 4 — training backend — complete:
-the @gym-bro/api training module
-ships full CRUD plus reorder for exercises, tags, plans, templates, and
-template-exercises across the repository/service/routes layers, with the
-training Zod schemas/types in @gym-bro/shared and the migration applied to
-Neon. 96 passing route tests. Stage 3 — shared package — complete: the
-@gym-bro/shared package hosts the auth + training Zod schemas, inferred
-types, and constants as the single source of truth; both apps consume it.
-Per-domain nutrition/body Zod schemas land in Stages 8/10 with their tables.
-Stage 2 complete; Stage 2.5 README skipped — full README lands in Stage 16.)
+Current focus: hardening and polish — app-level rate limits, slimmer Docker
+image, monitoring, and UI fixes.
