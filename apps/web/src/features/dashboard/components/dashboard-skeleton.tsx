@@ -12,8 +12,9 @@ import { useDashboardTranslation } from '../i18n';
 // Every pulsing bar sits in a `Line` box as tall as the text it stands in for (font
 // size × line height, same gaps and paddings as the real cards), so the swap to real
 // content doesn't shift anything.
-const microLabel = 'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase';
-const card = 'bg-card flex flex-col rounded-xl border p-5';
+const microLabel =
+  'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase xl:text-[13px]';
+const card = 'bg-card flex flex-col rounded-xl border p-5 xl:p-7';
 
 function Line({ height, className }: { height: string; className: string }) {
   return (
@@ -26,7 +27,7 @@ function Line({ height, className }: { height: string; className: string }) {
 export function DashboardSkeleton() {
   const t = useDashboardTranslation();
   return (
-    <div className="lg:col-start-2 flex w-full max-w-6xl flex-col gap-5 p-3 md:p-4">
+    <div className="lg:col-start-2 flex w-full max-w-6xl flex-col gap-5 p-3 md:p-4 xl:max-w-7xl xl:gap-7 xl:p-6">
       <header className="flex items-center justify-between gap-3">
         <div className="flex flex-col">
           {/* Date: text-sm (20px line); greeting: 28/34px at leading-tight. */}
@@ -38,7 +39,7 @@ export function DashboardSkeleton() {
 
       <Skeleton className="h-9.5 w-full rounded-full lg:hidden" />
 
-      <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
+      <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr] xl:gap-6">
         <div className={cn(card, 'gap-4')}>
           <p className={microLabel}>{t.skeleton.plate}</p>
           <div className="flex items-center gap-5">
@@ -71,7 +72,7 @@ export function DashboardSkeleton() {
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 lg:grid-cols-2 xl:gap-6">
         {/* Weight: value, the two deltas, then the 80px sparkline + its date row. */}
         <div className={cn(card, 'gap-1')}>
           <p className={microLabel}>{t.skeleton.weight}</p>

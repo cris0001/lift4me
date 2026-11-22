@@ -12,7 +12,8 @@ import { formatDate } from '@/lib/i18n/date-format';
 // activities are skipped) — enough for the dashboard without paging.
 const RECENT_WINDOW = 10;
 
-const microLabel = 'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase';
+const microLabel =
+  'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase xl:text-[13px]';
 
 // The most recent strength workout, linking to its detail. Compact stat card: micro-label
 // over the name + one muted meta line (date, duration, exercise count, rating). It sizes
@@ -29,7 +30,7 @@ export function LastWorkoutCard() {
 
   if (isPending) {
     return (
-      <div className="bg-card flex flex-col gap-2 self-start rounded-xl border p-5">
+      <div className="bg-card flex flex-col gap-2 self-start rounded-xl border p-5 xl:p-7">
         <p className={microLabel}>{t.lastWorkout.label}</p>
         <Skeleton className="h-5 w-2/3" />
         <Skeleton className="h-3 w-1/2" />
@@ -39,12 +40,12 @@ export function LastWorkoutCard() {
 
   if (!last) {
     return (
-      <div className="bg-card flex flex-col gap-1 self-start rounded-xl border p-5">
+      <div className="bg-card flex flex-col gap-1 self-start rounded-xl border p-5 xl:p-7">
         <p className={microLabel}>{t.lastWorkout.label}</p>
-        <span className="text-muted-foreground text-sm">{t.lastWorkout.none}</span>
+        <span className="text-muted-foreground text-sm xl:text-base">{t.lastWorkout.none}</span>
         <Link
           to="/session"
-          className="bg-accent text-primary hover:bg-accent/70 mt-1 inline-flex h-9 w-fit items-center rounded-full px-3.5 text-[12.5px] font-semibold"
+          className="bg-accent text-primary hover:bg-accent/70 mt-1 inline-flex h-9 w-fit items-center rounded-full px-3.5 text-[12.5px] font-semibold xl:h-10 xl:px-4 xl:text-sm"
         >
           {t.lastWorkout.startOne}
         </Link>
@@ -64,14 +65,16 @@ export function LastWorkoutCard() {
     <Link
       to="/history/$sessionId"
       params={{ sessionId: last.id }}
-      className="bg-card flex flex-col gap-1 self-start rounded-xl border p-5"
+      className="bg-card flex flex-col gap-1 self-start rounded-xl border p-5 xl:p-7"
     >
       <div className="flex items-center justify-between">
         <p className={microLabel}>{t.lastWorkout.label}</p>
         <ChevronRight className="text-muted-foreground size-5 shrink-0" />
       </div>
-      <p className="font-heading truncate text-[22px] leading-tight font-semibold">{last.name}</p>
-      <p className="text-muted-foreground flex items-center gap-1.5 text-xs">
+      <p className="font-heading truncate text-[22px] leading-tight font-semibold xl:text-[28px]">
+        {last.name}
+      </p>
+      <p className="text-muted-foreground flex items-center gap-1.5 text-xs xl:text-sm">
         {meta}
         {last.rating ? (
           <span className="text-foreground inline-flex items-center gap-0.5">

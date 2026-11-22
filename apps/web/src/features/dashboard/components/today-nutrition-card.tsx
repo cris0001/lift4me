@@ -19,8 +19,8 @@ export function TodayNutritionCard({ date }: { date: string }) {
   const left = targetKcal !== null ? Math.round(targetKcal - kcal) : null;
 
   return (
-    <div className="bg-card flex flex-col gap-4 rounded-xl border p-5">
-      <p className="text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase">
+    <div className="bg-card flex flex-col gap-4 rounded-xl border p-5 xl:gap-5 xl:p-7">
+      <p className="text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase xl:text-[13px]">
         {t.nutrition.label}
       </p>
 
@@ -28,18 +28,18 @@ export function TodayNutritionCard({ date }: { date: string }) {
         <SkeletonHero />
       ) : targetKcal === null ? (
         <div className="flex flex-col gap-2">
-          <p className="font-heading text-2xl font-bold tabular-nums">{kcal} kcal</p>
+          <p className="font-heading text-2xl font-bold tabular-nums xl:text-3xl">{kcal} kcal</p>
           <Link
             to="/targets"
-            className="bg-accent text-primary hover:bg-accent/70 mt-1 inline-flex h-9 w-fit items-center rounded-full px-3.5 text-[12.5px] font-semibold"
+            className="bg-accent text-primary hover:bg-accent/70 mt-1 inline-flex h-9 w-fit items-center rounded-full px-3.5 text-[12.5px] font-semibold xl:h-10 xl:px-4 xl:text-sm"
           >
             {t.nutrition.setTarget}
           </Link>
         </div>
       ) : (
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-5 xl:gap-8">
           <CalorieRing kcal={kcal} target={targetKcal} />
-          <div className="flex min-w-0 flex-1 flex-col gap-3">
+          <div className="flex min-w-0 flex-1 flex-col gap-3 xl:gap-4">
             <MacroBar
               label={t.nutrition.protein}
               macro="protein"
@@ -59,7 +59,7 @@ export function TodayNutritionCard({ date }: { date: string }) {
               target={target?.fatG ?? 0}
             />
             {left !== null ? (
-              <span className="bg-accent text-accent-foreground w-fit rounded-full px-3 py-1 text-xs font-medium">
+              <span className="bg-accent text-accent-foreground w-fit rounded-full px-3 py-1 text-xs font-medium xl:px-4 xl:text-sm">
                 {left >= 0 ? `${left} ${t.nutrition.left}` : `${-left} ${t.nutrition.over}`}
               </span>
             ) : null}
@@ -78,7 +78,7 @@ function CalorieRing({ kcal, target }: { kcal: number; target: number }) {
   return (
     <svg
       viewBox="0 0 120 120"
-      className="size-28 shrink-0 lg:size-32"
+      className="size-28 shrink-0 lg:size-32 xl:size-44"
       role="img"
       aria-label="Calories"
     >
@@ -123,13 +123,13 @@ function MacroBar({
   const pct = target > 0 ? Math.min(100, (value / target) * 100) : 0;
   return (
     <div className="flex flex-col gap-1">
-      <div className="flex items-baseline justify-between text-xs">
+      <div className="flex items-baseline justify-between text-xs xl:text-sm">
         <span className="text-foreground font-medium">{label}</span>
         <span className="text-muted-foreground">
           {Math.round(value)} / {Math.round(target)} g
         </span>
       </div>
-      <div className="bg-muted h-1.5 overflow-hidden rounded-full">
+      <div className="bg-muted h-1.5 overflow-hidden xl:h-2 rounded-full">
         <div className={cn('h-full rounded-full', MACRO_BAR[macro])} style={{ width: `${pct}%` }} />
       </div>
     </div>
