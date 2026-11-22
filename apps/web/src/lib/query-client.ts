@@ -1,4 +1,4 @@
-import { MutationCache, QueryClient } from '@tanstack/react-query';
+import { MutationCache, onlineManager, QueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { ApiError } from '@/lib/api-client';
@@ -68,3 +68,9 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+// TanStack Query v5 starts out assuming "online" and only flips on a later `offline`
+// event, so a PWA opened with no connection would send writes that fail (and are
+// lost) instead of queuing them. Seed the real state once at startup; the browser's
+// online/offline events keep it current from here.
+onlineManager.setOnline(navigator.onLine);
