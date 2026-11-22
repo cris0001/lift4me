@@ -53,8 +53,10 @@ password.
 Production runs as Docker containers (the app plus nginx) on one AWS EC2 instance
 behind Cloudflare. The infrastructure is defined in Terraform (`infra/`).
 
-Every push to `main` runs the tests, builds the image, pushes it to ECR, and deploys
-it through SSM. Authentication uses GitHub OIDC, so no AWS keys are stored and the
+Work happens on short-lived branches. `main` is protected: changes land only
+through pull requests with a green CI check (lint, typecheck, tests). Every merge
+to `main` runs the tests, builds the image, pushes it to ECR, and deploys it
+through SSM. Authentication uses GitHub OIDC, so no AWS keys are stored and the
 server has no SSH access. Secrets come from SSM Parameter Store. A deploy waits for
 the health check and rolls back to the previous image automatically if it fails.
 

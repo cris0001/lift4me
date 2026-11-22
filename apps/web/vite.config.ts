@@ -88,7 +88,7 @@ export default defineConfig({
   server: {
     port: 5173,
     // Proxy API calls to the local backend so the browser uses same-origin,
-    // relative "/api/..." URLs in dev — mirroring production on Fly, where the
+    // relative "/api/..." URLs in dev — mirroring production, where the
     // same Hono server serves both the SPA and /api. Keeps the auth cookie same-origin.
     proxy: {
       '/api': {

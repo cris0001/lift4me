@@ -2,7 +2,8 @@
 
 Lift4Me runs in production at **https://lift4.me** on a single AWS EC2 instance, as
 Docker containers, behind Cloudflare. Infrastructure is defined in Terraform
-(`infra/`), and every push to `main` is tested, built, and deployed by GitHub Actions
+(`infra/`). `main` is protected (pull requests only, green CI required), and every
+merge to `main` is tested, built, and deployed by GitHub Actions
 (`.github/workflows/deploy-aws.yml`).
 
 ```
@@ -77,7 +78,7 @@ missing or malformed value stops the container instead of failing later.
 The server uses the Neon **WebSocket Pool** driver on purpose: the app uses
 interactive transactions (e.g. finishing a workout), which the HTTP driver can't do.
 
-## CI/CD — push to `main`
+## CI/CD — merge to `main`
 
 `deploy-aws.yml`:
 
@@ -144,8 +145,8 @@ corepack pnpm dev      # web on :5173, API on :3001
 ## History
 
 1. Netlify — static SPA + one Netlify Function.
-2. Fly.io — the same single image as one Fly app (`fly.toml`, `deploy.yml`). Kept
-   running in parallel during the move and being retired.
+2. Fly.io — the same single image as one Fly app (`fly.toml`, `deploy.yml`). Ran in
+   parallel during the move to AWS, then shut down.
 3. AWS — the current setup above, built to mirror a typical company production
    deploy: infrastructure as code, keyless CI, no SSH, secrets in Parameter Store,
    health-checked deploys with automatic rollback.
