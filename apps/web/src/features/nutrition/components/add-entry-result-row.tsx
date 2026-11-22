@@ -12,10 +12,10 @@ import { FoodThumb } from './food-thumb';
 // One row of the results list: photo, name, meta line, and a split pill — the left half
 // logs the portion it names (the one this item was last logged at, else its default),
 // the pencil half opens the portion editor. Tapping the row body opens the editor too.
-// The meta line describes the portion last logged (a small "repeat" arrow, no amount),
-// else 100 g / one serving: its kcal everywhere, its macros from 470px up. Under 470px
-// the add half is an icon only — the same "repeat" arrow when it re-adds the
-// last-logged portion, a plus otherwise.
+// The meta line describes the portion last logged (a small "repeat" arrow), else 100 g /
+// one serving: its kcal everywhere, its macros from 470px up. Under 470px the add half is
+// an icon only — the same "repeat" arrow when it re-adds the last-logged portion, a plus
+// otherwise — so the meta line names the amount there too (from 470px the pill does).
 export function AddEntryResultRow({
   row,
   onAdd,
@@ -61,11 +61,17 @@ export function AddEntryResultRow({
                 strokeWidth={2.4}
               />
             ) : null}
-            {/* The last-logged portion is shown by the arrow alone, then its kcal; any
-                other row names its 100 g / one-serving base. */}
-            {meta.fromLast && meta.kcal
-              ? meta.kcal
-              : `${meta.portion}${meta.kcal ? ` · ${meta.kcal}` : ''}`}
+            {/* The last-logged portion: the arrow, its amount (only under 470px, where the
+                pill is icon-only), then its kcal. Any other row names its 100 g /
+                one-serving base. */}
+            {meta.fromLast && meta.kcal ? (
+              <>
+                <span className="min-[470px]:hidden">{meta.portion} · </span>
+                {meta.kcal}
+              </>
+            ) : (
+              `${meta.portion}${meta.kcal ? ` · ${meta.kcal}` : ''}`
+            )}
             {meta.macros ? (
               <span className="hidden min-[470px]:inline"> · {meta.macros}</span>
             ) : null}
@@ -82,7 +88,7 @@ export function AddEntryResultRow({
           disabled={disabled}
           onClick={onAdd}
         >
-          <AddIcon className="size-3.5 min-[470px]:hidden" strokeWidth={2.4} />
+          <AddIcon className="size-4 min-[470px]:hidden" strokeWidth={2.4} />
           <Plus className="hidden size-2.5 min-[470px]:block sm:size-3" strokeWidth={2.6} />
           <span className="hidden min-[470px]:inline">{portionLabel}</span>
         </button>
@@ -90,10 +96,10 @@ export function AddEntryResultRow({
         <button
           type="button"
           aria-label={t.addEntry.choosePortionAria(row.name)}
-          className="hover:bg-primary/10 flex items-center pr-[7px] pl-[5px] transition-colors sm:pr-[9px] sm:pl-[7px]"
+          className="hover:bg-primary/10 flex items-center pr-2 pl-1.5 transition-colors sm:pr-[9px] sm:pl-[7px]"
           onClick={onEditPortion}
         >
-          <Pencil className="size-[11px] sm:size-[13px]" />
+          <Pencil className="size-[13px] sm:size-[14px]" />
         </button>
       </div>
     </div>

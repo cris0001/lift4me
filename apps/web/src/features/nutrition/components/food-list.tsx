@@ -128,9 +128,11 @@ export function FoodList({ search, selectedId = null }: FoodListProps) {
                     </span>
                   )}
                   <span className="min-w-0 flex-1">
+                    {/* Full name, wrapped, below 1280px (similar products differ late in the
+                        name); the desktop table keeps one truncated line per row. */}
                     <span
                       className={cn(
-                        'font-heading block truncate text-[16.5px] leading-tight font-semibold xl:text-base',
+                        'font-heading block text-[16.5px] leading-tight font-semibold [overflow-wrap:anywhere] xl:truncate xl:text-base',
                         selected && 'xl:text-accent-foreground',
                       )}
                     >
