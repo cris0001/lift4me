@@ -281,3 +281,13 @@ the refactor works and the test still passes, it tests behavior (good).
   (`feat(training): add exercise CRUD endpoints`).
 - One logical chunk per commit (e.g. one schema, one service file), not a whole
   feature.
+
+## Branches and pull requests
+
+- `main` is protected: no direct pushes (admins included), no force-push, and
+  the CI check "Lint, typecheck, test" must pass before merging.
+- One branch per task, named by type: `feat/…`, `fix/…`, `docs/…`, `chore/…`,
+  `style/…`, `refactor/…`.
+- Each branch ends in a pull request with a short description (what, why, how
+  to check). Merging to `main` deploys to production.
+- After merging: delete the branch, then `git checkout main && git pull`.

@@ -56,10 +56,15 @@ pnpm format                                # prettier --write .
   (format in `docs/CONVENTIONS.md`). DB schema: propose as plain text first.
 - **Explain non-obvious choices** in 1–3 sentences.
 - **Stay in scope.** No unrelated changes.
+- **Branches + PRs.** `main` is protected: changes land only through a pull
+  request with green CI. Start every task on a new branch from an up-to-date
+  `main` (`feat/…`, `fix/…`, `docs/…`, `chore/…`, `style/…`). At the end, give
+  the user the commands to push the branch and open the PR
+  (`gh pr create --fill`); the user merges, which triggers the deploy.
 - **Commits:** never commit or push. When a logical chunk is done, show what
   changed (`git status` / `git diff`) and give a ready command with a
   Conventional Commit message (`feat(scope): …`); the user runs it. No AI
-  attribution, `Co-Authored-By`, or footers in commit messages.
+  attribution, `Co-Authored-By`, or footers in commit messages or PRs.
 - **Migrations:** only generate them; never run migrate/push. Show the SQL;
   warn loudly on DROP or data-losing ALTER.
 - Edited TS files are linted automatically and the workspace is typechecked
