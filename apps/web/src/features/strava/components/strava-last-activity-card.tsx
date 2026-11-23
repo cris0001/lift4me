@@ -16,8 +16,7 @@ import {
 import { RouteMap } from './route-map';
 import { formatDate } from '@/lib/i18n/date-format';
 
-const microLabel =
-  'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase xl:text-[13px]';
+const microLabel = 'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase';
 
 // The dashboard's latest-activity card: name, date and the big metrics, with the route
 // map beside them when the activity has one; a sport icon always sits next to the name.
@@ -27,9 +26,9 @@ export function StravaLastActivityCard({ session }: { session: StravaSessionItem
   const t = useStravaTranslation();
   if (!session) {
     return (
-      <div className="bg-card flex flex-col gap-2 rounded-xl border p-5 xl:p-7">
+      <div className="bg-card flex flex-col gap-2 rounded-xl border p-5">
         <StravaLabel>{t.card.lastActivity}</StravaLabel>
-        <span className="text-muted-foreground text-sm xl:text-base">{t.card.noneYet}</span>
+        <span className="text-muted-foreground text-sm">{t.card.noneYet}</span>
       </div>
     );
   }
@@ -61,7 +60,7 @@ export function StravaLastActivityCard({ session }: { session: StravaSessionItem
   return (
     // Layout follows the card's own width (container query), not the viewport: the map
     // sits beside the text only once the card is ≥ 32rem wide, otherwise below it.
-    <div className="bg-card @container rounded-xl border p-5 xl:p-7">
+    <div className="bg-card @container rounded-xl border p-5">
       <div className="flex flex-col gap-4 @lg:flex-row @lg:gap-5">
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <StravaLabel>{t.card.lastActivity}</StravaLabel>
@@ -70,10 +69,10 @@ export function StravaLastActivityCard({ session }: { session: StravaSessionItem
               <Icon className="size-5" />
             </span>
             <div className="min-w-0">
-              <p className="font-heading text-lg leading-snug font-semibold break-words xl:text-xl">
+              <p className="font-heading text-lg leading-snug font-semibold break-words">
                 {session.name}
               </p>
-              <p className="text-muted-foreground text-[13px] xl:text-sm">
+              <p className="text-muted-foreground text-[13px]">
                 {formatDate(parseISO(session.startedAt), 'EEEE, MMM d')}
               </p>
             </div>
@@ -82,10 +81,10 @@ export function StravaLastActivityCard({ session }: { session: StravaSessionItem
             <div className="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-3">
               {metrics.map((metric) => (
                 <div key={metric.label}>
-                  <p className="font-heading text-lg leading-tight font-bold whitespace-nowrap xl:text-xl tabular-nums">
+                  <p className="font-heading text-lg leading-tight font-bold whitespace-nowrap tabular-nums">
                     {metric.value}
                   </p>
-                  <p className="text-muted-foreground text-[11px] xl:text-xs">{metric.label}</p>
+                  <p className="text-muted-foreground text-[11px]">{metric.label}</p>
                 </div>
               ))}
             </div>
@@ -94,7 +93,7 @@ export function StravaLastActivityCard({ session }: { session: StravaSessionItem
         {session.summaryPolyline ? (
           <RouteMap
             polyline={session.summaryPolyline}
-            className="h-40 w-full shrink-0 xl:h-48 overflow-hidden rounded-lg @lg:h-auto @lg:min-h-40 @lg:w-40 xl:@lg:min-h-48 xl:@lg:w-48"
+            className="h-40 w-full shrink-0 overflow-hidden rounded-lg @lg:h-auto @lg:min-h-40 @lg:w-40"
           />
         ) : null}
       </div>

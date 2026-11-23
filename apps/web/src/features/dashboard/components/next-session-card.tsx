@@ -13,10 +13,8 @@ interface NextSessionCardProps {
   session: PlannedSessionWithTemplate | null;
 }
 
-const microLabel =
-  'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase xl:text-[13px]';
-const secondaryPill =
-  'bg-accent text-primary hover:bg-accent/70 h-10 rounded-full px-4 xl:h-11 xl:px-5 xl:text-base';
+const microLabel = 'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase';
+const secondaryPill = 'bg-accent text-primary hover:bg-accent/70 h-10 rounded-full px-4';
 
 // The soonest upcoming planned session, or a prompt to plan one. Text-forward stat card.
 export function NextSessionCard({ session }: NextSessionCardProps) {
@@ -30,22 +28,22 @@ export function NextSessionCard({ session }: NextSessionCardProps) {
   };
 
   return (
-    <div className="bg-card flex h-full flex-col gap-1.5 rounded-xl border p-5 xl:gap-2.5 xl:p-7">
+    <div className="bg-card flex h-full flex-col gap-1.5 rounded-xl border p-5">
       <p className={microLabel}>{t.nextSession.label}</p>
       {session ? (
         <>
           <div className="flex flex-col gap-0.5">
-            <p className="font-heading text-[22px] leading-tight font-semibold xl:text-[28px]">
+            <p className="font-heading text-[22px] leading-tight font-semibold">
               {session.template.name}
             </p>
-            <p className="text-muted-foreground text-sm xl:text-base">
+            <p className="text-muted-foreground text-sm">
               {formatDate(parseISO(session.scheduledDate), 'EEEE, MMM d')} ·{' '}
               {relativeDay(differenceInCalendarDays(parseISO(session.scheduledDate), new Date()))}
             </p>
           </div>
           <div className="mt-auto flex flex-wrap gap-2 pt-2">
             <Button
-              className="h-10 rounded-full px-4 xl:h-11 xl:px-5 xl:text-base"
+              className="h-10 rounded-full px-4"
               onClick={() =>
                 void startFromTemplate({
                   templateId: session.template.id,
@@ -64,7 +62,7 @@ export function NextSessionCard({ session }: NextSessionCardProps) {
         </>
       ) : (
         <>
-          <p className="font-heading text-[22px] leading-tight font-semibold xl:text-[28px]">
+          <p className="font-heading text-[22px] leading-tight font-semibold">
             {t.nextSession.nothing}
           </p>
           <Button asChild variant="ghost" className={`${secondaryPill} mt-auto w-fit`}>

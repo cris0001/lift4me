@@ -8,8 +8,7 @@ import { useStravaTranslation } from '../i18n';
 import { sportGroup, type SportGroup } from '../utils/sport-group';
 import { weeklyVolume } from '../utils/stats';
 
-const microLabel =
-  'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase xl:text-[13px]';
+const microLabel = 'text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase';
 const WEEKS = 8;
 
 // The dashboard's weekly-volume card beside the last activity: one sport's distance per
@@ -37,7 +36,7 @@ export function StravaWeeklyCard({ sessions }: { sessions: StravaSessionItem[] }
   const thisWeek = weeks[weeks.length - 1]?.value ?? 0;
 
   return (
-    <div className="bg-card flex flex-col gap-3 rounded-xl border p-5 xl:p-7">
+    <div className="bg-card flex flex-col gap-3 rounded-xl border p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className={microLabel}>{t.stats.lastWeeks(WEEKS)}</p>
         {groups.length > 1 ? (
@@ -61,13 +60,13 @@ export function StravaWeeklyCard({ sessions }: { sessions: StravaSessionItem[] }
           </div>
         ) : null}
       </div>
-      <p className="font-heading text-lg leading-tight font-bold tabular-nums xl:text-xl">
+      <p className="font-heading text-lg leading-tight font-bold tabular-nums">
         {total.toFixed(1)} {unit}
-        <span className="text-muted-foreground ml-1.5 text-[13px] font-normal xl:text-sm">
+        <span className="text-muted-foreground ml-1.5 text-[13px] font-normal">
           {t.groups[group].toLowerCase()}
         </span>
       </p>
-      <div className="mt-auto grid h-24 grid-cols-8 xl:h-32 items-end gap-2" aria-hidden>
+      <div className="mt-auto grid h-24 grid-cols-8 items-end gap-2" aria-hidden>
         {weeks.map((week, i) => (
           <div
             key={week.weekStart}
@@ -77,7 +76,7 @@ export function StravaWeeklyCard({ sessions }: { sessions: StravaSessionItem[] }
           />
         ))}
       </div>
-      <div className="text-muted-foreground flex justify-between text-[11px] xl:text-xs">
+      <div className="text-muted-foreground flex justify-between text-[11px]">
         <span>{weeks[0]?.label}</span>
         <span>
           {t.stats.thisWeek} · {thisWeek.toFixed(1)} {unit}

@@ -62,20 +62,15 @@ export function DashboardPage() {
   if (initialLoading) return <DashboardSkeleton />;
 
   return (
-    <div className="lg:col-start-2 flex w-full max-w-6xl flex-col gap-5 p-3 md:p-4 xl:max-w-7xl xl:gap-7 xl:p-6">
+    <div className="lg:col-start-2 flex w-full max-w-6xl flex-col gap-5 p-3 md:p-4">
       <header className="flex items-center justify-between gap-3">
         <div className="flex flex-col">
-          <p className="text-muted-foreground text-sm xl:text-base">
-            {formatDate(today, 'EEEE, MMMM d')}
-          </p>
-          <h1 className="font-heading text-[28px] leading-tight font-bold tracking-tight lg:text-[34px] xl:text-[42px]">
+          <p className="text-muted-foreground text-sm">{formatDate(today, 'EEEE, MMMM d')}</p>
+          <h1 className="font-heading text-[28px] leading-tight font-bold tracking-tight lg:text-[34px]">
             {t.greeting[greetingKey(today.getHours())]}
           </h1>
         </div>
-        <Button
-          asChild
-          className="hidden h-9.5 rounded-full px-5 lg:inline-flex xl:h-11 xl:px-6 xl:text-base"
-        >
+        <Button asChild className="hidden h-9.5 rounded-full px-5 lg:inline-flex">
           <Link to="/session">
             <Play className="size-4" />
             {t.startWorkout}
@@ -94,12 +89,12 @@ export function DashboardPage() {
         </Link>
       </Button>
 
-      <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr] xl:gap-6">
+      <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr]">
         <TodayNutritionCard date={todayIso} />
         <NextSessionCard session={nextSession} />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2 xl:gap-6">
+      <div className="grid gap-4 lg:grid-cols-2">
         <LatestWeightCard />
         <LastWorkoutCard />
       </div>
