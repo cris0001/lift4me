@@ -47,8 +47,8 @@ export function LatestWeightCard() {
     latest !== null && trendStart !== null && trend.length > 1 ? latest - trendStart : null;
 
   return (
-    <div className="bg-card flex flex-col gap-1 rounded-xl border p-5 xl:gap-2 xl:p-7">
-      <p className="text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase xl:text-[13px]">
+    <div className="bg-card flex flex-col gap-1 rounded-xl border p-5">
+      <p className="text-muted-foreground text-[11px] font-medium tracking-[0.08em] uppercase">
         {t.weight.label}
       </p>
       {isPending ? (
@@ -58,11 +58,11 @@ export function LatestWeightCard() {
         </>
       ) : latest !== null ? (
         <>
-          <p className="font-heading text-[26px] leading-tight font-bold xl:text-[34px] tabular-nums">
+          <p className="font-heading text-[26px] leading-tight font-bold tabular-nums">
             {latest}
-            <span className="text-muted-foreground text-base font-normal xl:text-lg"> kg</span>
+            <span className="text-muted-foreground text-base font-normal"> kg</span>
           </p>
-          <p className="text-muted-foreground flex flex-wrap gap-x-3 text-xs xl:text-sm">
+          <p className="text-muted-foreground flex flex-wrap gap-x-3 text-xs">
             {delta !== null ? (
               <span>
                 <Delta value={delta} /> {t.weight.sinceLast}
@@ -83,7 +83,7 @@ export function LatestWeightCard() {
       ) : (
         <Link
           to="/body"
-          className="bg-accent text-primary hover:bg-accent/70 mt-1 inline-flex h-9 w-fit items-center rounded-full px-3.5 text-[12.5px] font-semibold xl:h-10 xl:px-4 xl:text-sm"
+          className="bg-accent text-primary hover:bg-accent/70 mt-1 inline-flex h-9 w-fit items-center rounded-full px-3.5 text-[12.5px] font-semibold"
         >
           {t.weight.logWeight}
         </Link>

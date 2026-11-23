@@ -38,7 +38,7 @@ export function WeightSparkline({ points }: { points: WeightPoint[] }) {
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         preserveAspectRatio="none"
-        className="h-20 w-full xl:h-28"
+        className="h-20 w-full"
         role="img"
         aria-label={`Weight from ${first.weight} to ${last.weight} kg`}
       >
@@ -52,7 +52,7 @@ export function WeightSparkline({ points }: { points: WeightPoint[] }) {
           className="stroke-primary"
         />
       </svg>
-      <div className="text-muted-foreground flex justify-between text-[11px] xl:text-xs">
+      <div className="text-muted-foreground flex justify-between text-[11px]">
         <span>{formatDate(parseISO(first.date), 'MMM d')}</span>
         <span>{formatDate(parseISO(last.date), 'MMM d')}</span>
       </div>
