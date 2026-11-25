@@ -24,7 +24,7 @@ interface LandingCopy {
     accent: string;
     lead: string;
     cta: string;
-    seeInside: string;
+    demo: string;
     shotNote: string;
   };
   marquee: string;
@@ -63,7 +63,7 @@ const en: LandingCopy = {
     accent: 'trend.',
     lead: 'Your gym log, food diary and body tracker in one place — with Strava runs on the same calendar as your squats. Built for one hand, between sets.',
     cta: 'Start free',
-    seeInside: 'See what’s inside',
+    demo: 'Try the demo',
     shotNote: 'your whole day, one screen',
   },
   marquee: 'eat sleep lift repeat',
@@ -212,7 +212,7 @@ const pl: LandingCopy = {
     accent: 'trend.',
     lead: 'Dziennik treningów, dziennik jedzenia i pomiary ciała w jednym miejscu — z bieganiem ze Stravy w tym samym kalendarzu co przysiady. Zrobione pod jedną rękę, między seriami.',
     cta: 'Zacznij za darmo',
-    seeInside: 'Zobacz, co w środku',
+    demo: 'Wypróbuj demo',
     shotNote: 'cały dzień na jednym ekranie',
   },
   marquee: 'jedz śpij trenuj powtórz',
